@@ -108,7 +108,7 @@ export const GoogleButton = (props: ButtonProps) => {
         await signOut(auth)
 
         localStorage.setItem('myAuth', 'false')
-        navigate('/signin')
+        navigate('/')
     }
 
     if (loading){

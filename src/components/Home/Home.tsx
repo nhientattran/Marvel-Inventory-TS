@@ -5,7 +5,7 @@ import { Button, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 // Internal Imports
-import car_image from '../../assets/Images/marvel_background.jpg';
+import marvel_image from '../../assets/Images/marvel_background.jpg';
 
 interface Props {
     title: string
@@ -19,7 +19,8 @@ const Root = styled('div')({
 const NavBarContainer = styled('div')({
     display: 'flex',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
+    fontFamily: 'cursive'
 })
 
 const Logo = styled('h1')({
@@ -47,7 +48,7 @@ const NavA = styled(Link)({
 })
 
 const Main = styled('main')({
-    backgroundImage: `linear-gradient(rgba(0,0,0,.2), rgba(0,0,0,.7)),url(${car_image})`,
+    backgroundImage: `linear-gradient(rgba(0,0,0,.2), rgba(0,0,0,.7)),url(${marvel_image})`,
     width: '100%',
     height: '100%',
     backgroundSize: 'cover',
@@ -58,12 +59,12 @@ const Main = styled('main')({
 
 const MainText = styled('div')({
     textAlign: 'center',
-    // margin: '2px',
     position: 'relative',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    color: 'white'
+    color: 'white',
+    fontFamily: 'cursive'
 })
 
 
@@ -71,10 +72,9 @@ export const Home = (props:Props) => {
     const myAuth = localStorage.getItem('myAuth')
     return (
         <Root>
-            <Typography>
                 <NavBarContainer>
                     <Logo>
-                        <LogoA to="/">Characters</LogoA>
+                        <LogoA to="/">Marvel Characters</LogoA>
                     </Logo>
                     <LogoNavigation>
                         <li>
@@ -100,12 +100,11 @@ export const Home = (props:Props) => {
                 </NavBarContainer>
                 <Main>
                     <MainText>
-                        <h1>{props.title}</h1>
+                        <h1>Characters Inventory</h1>
                         <p>Welcome to our Marvel Characters Inventory!</p>
                         <Button color='primary' variant='contained' component={Link} to='/dashboard'>See the Characters</Button>
                     </MainText>
                 </Main>
-            </Typography>
         </Root>
     )
 }

@@ -116,7 +116,7 @@ export const Dashboard = () => {
         },  
         {
             text: 'Sign In',
-            onclick: () => navigate('/signin')
+            onClick: () => navigate('/signin')
         }
 ]
     return (
