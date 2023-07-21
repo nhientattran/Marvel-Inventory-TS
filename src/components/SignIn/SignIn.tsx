@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 import firebase from 'firebase/app';
 import { useSigninCheck } from 'reactfire';
-import { useAuthState, useSignInWithGoogle } from 'react-firebase-hooks/auth'; 
+import GitHubIcon from '@mui/icons-material/GitHub';
+import GoogleIcon from '@mui/icons-material/Google';
+import { useAuthState, useSignInWithGoogle, useSignInWithGithub } from 'react-firebase-hooks/auth'; 
 import {
     getAuth,
     GoogleAuthProvider,
     signOut,
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
-    onAuthStateChanged
+    onAuthStateChanged,
+    GithubAuthProvider,
+    signInWithPopup
 } from 'firebase/auth'; 
 import {
     Container,
@@ -79,7 +83,62 @@ const Alert = (props: AlertProps) => {
 interface ButtonProps {
     open?: boolean
     onClick?: () => void 
+};
+
+export const GithubButton = (props: ButtonProps) => {
+    const navigate = useNavigate();
+    const auth = getAuth();
+    const [ signInWithGitHub, user, loading, error ] = useSignInWithGithub(auth)
+
+    const signIn = async() => {
+        await signInWithGitHub()
+        console.log(auth)
+        if (auth.currentUser) {
+            localStorage.setItem('myAuth', 'true')
+            navigate('/dashboard')
+        } else {
+            navigate('/signin')
+        }
+    }
+
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            console.log(user.email)
+            console.log(user.uid)
+        }
+    })
+
+    const signUsOut = async () => {
+        await signOut(auth)
+
+        localStorage.setItem('myAuth', 'false')
+        navigate('/')
+    }
+
+    if (loading) {
+        return (<CircularProgress />)
+    }
+
+    const myAuth = localStorage.getItem('myAuth')
+
+    return (
+        <div>
+            {myAuth === 'true' ? 
+            <>
+                <div></div>
+            </>
+            : 
+            <>
+                <div onClick={signIn} style={{cursor: 'pointer'}}>
+                    <GitHubIcon sx={{fontSize: '45px'}}/>
+                    <Typography>Sign In With GitHub</Typography>
+                </div>
+            </>
+            }
+        </div>
+    )
 }
+
 
 export const GoogleButton = (props: ButtonProps) => {
     const navigate = useNavigate();
@@ -132,7 +191,6 @@ interface UserProps {
     email: string,
     password: string
 }
-
 
 export const SignIn = () => {
     const [open, setOpen] = useState(false)
@@ -193,6 +251,7 @@ export const SignIn = () => {
             </form>
             <NavA to='/signup'>Don't Have an account? Register Now!</NavA>
             <GoogleButton open={open} onClick={handleSnackClosed} />
+            <GithubButton open={open} onClick={handleSnackClosed} />
             <Snackbar message='success' open={alertOpen} autoHideDuration={3000} onClose={navToDash}>
                 <div>
                     <Alert severity='success'>
