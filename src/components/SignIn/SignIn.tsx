@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import firebase from 'firebase/app';
 import { useSigninCheck } from 'reactfire';
+
+// I import GitHubIcon to get the Icon picture of Github
 import GitHubIcon from '@mui/icons-material/GitHub';
-import GoogleIcon from '@mui/icons-material/Google';
+
+// Import the useSignInWithGithub, GithubAuthProvider to make authentication by Github
+
 import { useAuthState, useSignInWithGoogle, useSignInWithGithub } from 'react-firebase-hooks/auth'; 
 import {
     getAuth,
@@ -12,7 +16,6 @@ import {
     signInWithEmailAndPassword,
     onAuthStateChanged,
     GithubAuthProvider,
-    signInWithPopup
 } from 'firebase/auth'; 
 import {
     Container,
@@ -85,7 +88,8 @@ interface ButtonProps {
     onClick?: () => void 
 };
 
-export const GithubButton = (props: ButtonProps) => {
+// Create Github Icon to let user sign in with Github
+export const GithubIcon = (props: ButtonProps) => {
     const navigate = useNavigate();
     const auth = getAuth();
     const [ signInWithGitHub, user, loading, error ] = useSignInWithGithub(auth)
@@ -121,6 +125,7 @@ export const GithubButton = (props: ButtonProps) => {
 
     const myAuth = localStorage.getItem('myAuth')
 
+    // instead of the button, i think the github icon looks better so I used what we did in home.tsx about if {myAuth === 'true'} will return the html element
     return (
         <div>
             {myAuth === 'true' ? 
@@ -130,7 +135,7 @@ export const GithubButton = (props: ButtonProps) => {
             : 
             <>
                 <div onClick={signIn} style={{cursor: 'pointer'}}>
-                    <GitHubIcon sx={{fontSize: '45px'}}/>
+                    <GitHubIcon sx={{fontSize: '60px', textAlign: 'center'}}/>
                     <Typography>Sign In With GitHub</Typography>
                 </div>
             </>
@@ -251,7 +256,7 @@ export const SignIn = () => {
             </form>
             <NavA to='/signup'>Don't Have an account? Register Now!</NavA>
             <GoogleButton open={open} onClick={handleSnackClosed} />
-            <GithubButton open={open} onClick={handleSnackClosed} />
+            <GithubIcon open={open} onClick={handleSnackClosed} />
             <Snackbar message='success' open={alertOpen} autoHideDuration={3000} onClose={navToDash}>
                 <div>
                     <Alert severity='success'>
